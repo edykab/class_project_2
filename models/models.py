@@ -51,7 +51,8 @@ class ReportInformation(BaseModel, Base):
     reporting_state_name: Mapped[str] = mapped_column(String(100))
     reporting_county_fips: Mapped[str] = mapped_column(String(10))
     reporting_county_name: Mapped[str] = mapped_column(String(100))
-    
+    diagnosis: Mapped[Optional[str]] = mapped_column(String(255))  # Added this line
+
     # Foreign Key
     patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
     
@@ -125,7 +126,7 @@ class TreatmentInformation(BaseModel, Base):
     treatment_7_2m_units: Mapped[Optional[bool]] = mapped_column(Boolean)
     treatment_other: Mapped[Optional[str]] = mapped_column(String(64))
     treatment_unknown: Mapped[Optional[bool]] = mapped_column(Boolean)
-    
+    treatment_plan: Mapped[Optional[str]] = mapped_column(String(255))  # Added this line
     # Foreign Key
     patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
     
