@@ -40,6 +40,19 @@ class PatientInformation(BaseModel, Base):
     syphilis_test_info = relationship("SyphilisTestInformation", back_populates="patient")
     treatment_info = relationship("TreatmentInformation", back_populates="patient")
     serologic_response = relationship("SerologicResponse", back_populates="patient")
+    sexual_partners = relationship("SexualPartnerInformation", back_populates="client")
+    
+class SexualPartnerInformation(BaseModel, Base):
+    __tablename__ = "sexual_partner_information"
+    
+    sexual_partner_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    client_unique_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
+    partner_name: Mapped[str] = mapped_column(String(100))
+    partner_gender: Mapped[str] = mapped_column(String(10))
+    partner_birth_date: Mapped[Date] = mapped_column(Date)
+
+    # Relationships
+    client = relationship("PatientInformation", back_populates="sexual_partners")
 
 
 class ReportInformation(BaseModel, Base):
