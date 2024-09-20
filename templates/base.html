@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/main.css">
+    <title>{% block title %}{% endblock title %} - My Webpage</title>
+    <style media="screen">
+        label {
+          display: block;
+          font-weight: bold;
+        }
+        
+        
+        input[type="email"],
+        input[type="password"] {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      
+      </style>
+ {% endblock head %}
+</head>
+<body>
+    {% block content %}
+    {% endblock content %}
+    
+    <div id="footer">
+    {% block footer %}
+     &copy; Copyright 2008 by <a href="https://school.mildredgroup.com">School of Programming and Software Development</a>.
+    {% endblock footer %}
+ </div>
+</body>
+</html>

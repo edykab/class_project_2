@@ -1,163 +1,190 @@
-from sqlalchemy import Integer, String, Date, Boolean, ForeignKey, DateTime, func
+
+from sqlalchemy import Integer, String, Date, ForeignKey, DateTime, func
 from sqlalchemy.orm import mapped_column, Mapped, DeclarativeBase, relationship
 from sqlalchemy.ext.declarative import declared_attr
 from datetime import datetime
 from typing import Optional
 
 class Base(DeclarativeBase):
-    pass
+ pass
 
 class BaseModel:
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
+ @declared_attr
+ 
+ def __tablename__(cls):
+    return cls.__name__.lower()
 
-class PatientInformation(BaseModel, Base):
-    __tablename__ = "patient_information"
-    
-    patient_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    last_name: Mapped[str] = mapped_column(String(100))
+class Base(DeclarativeBase):
+ pass
+
+class ClientProfile(BaseModel, Base):
+    __tablename__ = "client_profile"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+    unique_id: Mapped[str] = mapped_column(String(64), unique=True)
     first_name: Mapped[str] = mapped_column(String(100))
     middle_name: Mapped[Optional[str]] = mapped_column(String(100))
-    date_of_birth: Mapped[Date] = mapped_column(Date)
-    estimated_delivery_date: Mapped[Date] = mapped_column(Date)
-    hepb_status_awareness: Mapped[str] = mapped_column(String(10))
+    last_name: Mapped[str] = mapped_column(String(100))
+    date_of_birth: Mapped[datetime] = mapped_column(DateTime)
+    country_of_birth: Mapped[str] = mapped_column(String(150))
+    gender: Mapped[str] = mapped_column(String(30))
+    gender_identity: Mapped[str] = mapped_column(String(50))
+    phone_number: Mapped[Optional[str]] = mapped_column(String(30))
     address: Mapped[Optional[str]] = mapped_column(String(255))
     city: Mapped[Optional[str]] = mapped_column(String(100))
     state: Mapped[Optional[str]] = mapped_column(String(100))
-    zip: Mapped[Optional[str]] = mapped_column(String(20))
-    phone_number: Mapped[Optional[str]] = mapped_column(String(30))
-    insurance_type: Mapped[Optional[str]] = mapped_column(String(100))
-    race: Mapped[Optional[str]] = mapped_column(String(50))
-    hispanic: Mapped[Optional[bool]] = mapped_column(Boolean)
-    country_of_birth: Mapped[Optional[str]] = mapped_column(String(150))
-    primary_language: Mapped[Optional[str]] = mapped_column(String(100))
-    interpreter_needed: Mapped[Optional[bool]] = mapped_column(Boolean)
-
-    # Relationships
-    reports = relationship("ReportInformation", back_populates="patient")
-    maternal_info = relationship("MaternalInformation", back_populates="patient")
-    syphilis_test_info = relationship("SyphilisTestInformation", back_populates="patient")
-    treatment_info = relationship("TreatmentInformation", back_populates="patient")
-    serologic_response = relationship("SerologicResponse", back_populates="patient")
-    sexual_partners = relationship("SexualPartnerInformation", back_populates="client")
+    zip_code: Mapped[Optional[str]] = mapped_column(String(20))
+    country: Mapped[Optional[str]] = mapped_column(String(150))
+    email: Mapped[Optional[str]] = mapped_column(String(150))
+    ethnicity: Mapped[str] = mapped_column(String(100))
+    race: Mapped[str] = mapped_column(String(50))
+    sexual_orientation: Mapped[str] = mapped_column(String(64))
+    employment_status: Mapped[str] = mapped_column(String(64))
     
-class SexualPartnerInformation(BaseModel, Base):
-    __tablename__ = "sexual_partner_information"
+class ClientScreening(BaseModel, Base):
+    __tablename__ = "client_screening"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    unique_id: Mapped[str] = mapped_column(String(64), ForeignKey("client_profile.unique_id", onupdate="CASCADE", ondelete="CASCADE"))
+    date_of_screening: Mapped[datetime] = mapped_column(DateTime)
+    health_care_provider: Mapped[str] = mapped_column(String(64))
+    reporter_name: Mapped[str] = mapped_column(String(64))
+    reporter_contact: Mapped[str] = mapped_column(String(64))
+    sexual_partner_gender: Mapped[str] = mapped_column(String(64))
+    sexual_partner_gender_identity: Mapped[str] = mapped_column(String(64))
+    previous_HIV_screening: Mapped[str] = mapped_column(String(10))
+    previous_HIV_screening_date: Mapped[datetime] = mapped_column(DateTime)
+    previous_HIV_screening_result: Mapped[str] = mapped_column(String(64))
+    reason_for_testing: Mapped[str] = mapped_column(String(64))
+    screening_type: Mapped[str] = mapped_column(String(64))
+    site_of_sample_collection: Mapped[str] = mapped_column(String(64))
+    sample_collection_date: Mapped[datetime] = mapped_column(DateTime)
+    screening_result: Mapped[str] = mapped_column(String(64))
+    screening_notes: Mapped[Optional[str]] = mapped_column(String(64))
+    diagnosis: Mapped[str] = mapped_column(String(64))
     
-    sexual_partner_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    client_unique_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
-    partner_name: Mapped[str] = mapped_column(String(100))
-    partner_gender: Mapped[str] = mapped_column(String(10))
-    partner_birth_date: Mapped[Date] = mapped_column(Date)
-
-    # Relationships
-    client = relationship("PatientInformation", back_populates="sexual_partners")
-
-
-class ReportInformation(BaseModel, Base):
-    __tablename__ = "report_information"
+class ClientTreatment(BaseModel, Base):
+    __tablename__ = "client_treatment"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    unique_id: Mapped[str] = mapped_column(String(64), ForeignKey("client_profile.unique_id", onupdate="CASCADE", ondelete="CASCADE"))
+    date_of_treatment: Mapped[datetime] = mapped_column(DateTime)
+    health_care_provider: Mapped[str] = mapped_column(String(64))
+    reporter_name: Mapped[str] = mapped_column(String(64))
+    reporter_contact: Mapped[str] = mapped_column(String(64))
+    treatment_type: Mapped[str] = mapped_column(String(64))
+    treatment_plan: Mapped[Optional[str]] = mapped_column(String(64))
+    treatment_notes: Mapped[Optional[str]] = mapped_column(String(64))
+    treatment_result: Mapped[str] = mapped_column(String(64))
     
-    report_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    report_date: Mapped[Date] = mapped_column(Date)
-    reporting_state_fips: Mapped[str] = mapped_column(String(10))
-    reporting_state_name: Mapped[str] = mapped_column(String(100))
-    reporting_county_fips: Mapped[str] = mapped_column(String(10))
-    reporting_county_name: Mapped[str] = mapped_column(String(100))
-    diagnosis: Mapped[Optional[str]] = mapped_column(String(255))  # Added this line
+class PartnerManagement(BaseModel, Base):
+    __tablename__ = "partner_management"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(64), insert_default="system")
+    unique_id: Mapped[str] = mapped_column(String(64),unique=True)
+    partner_unique_id: Mapped[str] = mapped_column(String(64), ForeignKey("client_profile.unique_id", onupdate="CASCADE", ondelete="CASCADE"))
+    date_of_partner_management: Mapped[datetime] = mapped_column(DateTime)
+    health_care_provider: Mapped[str] = mapped_column(String(64))
+    reporter_name: Mapped[str] = mapped_column(String(64))
+    reporter_contact: Mapped[str] = mapped_column(String(64))
+    partner_management_type: Mapped[str] = mapped_column(String(64))
+    partner_management_plan: Mapped[Optional[str]] = mapped_column(String(64))
+    partner_management_notes: Mapped[Optional[str]] = mapped_column(String(64))
+    partner_management_result: Mapped[str] = mapped_column(String(64))
+    
+    
+    
+    # Model for Congenital Syphilis Case Reporting  
+class CongenitalSyphilisProfile(BaseModel, Base):
+    __tablename__ = "congenital_syphilis_profile"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+    
+     # Foreign Key relationship to ClientProfile
+    client_unique_id: Mapped[str] = mapped_column(String(64), ForeignKey("client_profile.unique_id", onupdate="CASCADE", ondelete="CASCADE"))
+    
+    # Maternal Information
+    mother_name: Mapped[str] = mapped_column(String(150))
+    mother_date_of_birth: Mapped[datetime] = mapped_column(Date)
+    mother_residence_state: Mapped[str] = mapped_column(String(100))
+    mother_residence_country: Mapped[str] = mapped_column(String(100))
+    mother_race: Mapped[str] = mapped_column(String(50))
+    mother_ethnicity: Mapped[str] = mapped_column(String(50))
+    mother_last_menstrual_period: Mapped[datetime] = mapped_column(Date)
+    first_prenatal_visit_date: Mapped[datetime] = mapped_column(Date)
+    prenatal_visit_trimester: Mapped[str] = mapped_column(String(20)) 
+    marital_status: Mapped[str] = mapped_column(String(30))
+    hiv_status: Mapped[str] = mapped_column(String(30))
+    
+    # Infant/Child Information
+    infant_date_of_birth: Mapped[datetime] = mapped_column(Date)
+    infant_birth_weight: Mapped[Optional[int]] = mapped_column(Integer)  
+    infant_gestational_age: Mapped[Optional[int]] = mapped_column(Integer)  
+    infant_reactive_test: Mapped[str] = mapped_column(String(10))  
+    
+    # Testing & Treatment Information
+    mother_syphilis_stage: Mapped[str] = mapped_column(String(50))
+    mother_treatment: Mapped[str] = mapped_column(String(100))  
+    appropriate_serologic_response: Mapped[str] = mapped_column(String(30))  
+    infant_treatment: Mapped[Optional[str]] = mapped_column(String(100)) 
+    case_classification: Mapped[str] = mapped_column(String(30)) 
+    
 
-    # Foreign Key
-    patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
+    # Hepatitis B Infected Pregnant Woman Reporting model
+class HepatitisBProfile(BaseModel, Base):
+    __tablename__ = "hepatitis_b_profile"
     
-    # Relationships
-    patient = relationship("PatientInformation", back_populates="reports")
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+    updated_at: Mapped[datetime] = mapped_column(DateTime, insert_default=func.now())
+    updated_by: Mapped[str] = mapped_column(String(100), insert_default="system")
+
+    # Foreign Key relationship to ClientProfile
+    client_unique_id: Mapped[str] = mapped_column(String(64), ForeignKey("client_profile.unique_id", onupdate="CASCADE", ondelete="CASCADE"))
+    
+    # Patient Information
+    patient_first_name: Mapped[str] = mapped_column(String(100))
+    patient_middle_name: Mapped[Optional[str]] = mapped_column(String(100))
+    patient_last_name: Mapped[str] = mapped_column(String(100))
+    patient_date_of_birth: Mapped[datetime] = mapped_column(Date)
+    patient_race: Mapped[str] = mapped_column(String(50))
+    patient_ethnicity: Mapped[str] = mapped_column(String(50))
+    patient_country_of_birth: Mapped[str] = mapped_column(String(100))
+    patient_primary_language: Mapped[Optional[str]] = mapped_column(String(100))
+    patient_address: Mapped[str] = mapped_column(String(255))
+    patient_city: Mapped[str] = mapped_column(String(100))
+    patient_state: Mapped[str] = mapped_column(String(100))
+    patient_zip_code: Mapped[Optional[str]] = mapped_column(String(20))
+    
+    # Clinical and Laboratory Information
+    ob_provider_first_name: Mapped[str] = mapped_column(String(100))
+    ob_provider_last_name: Mapped[str] = mapped_column(String(100))
+    expected_delivery_date: Mapped[datetime] = mapped_column(Date)
+    insurance_type: Mapped[str] = mapped_column(String(50)) 
+    hbsag_result: Mapped[Optional[str]] = mapped_column(String(10))  
+    hbeag_result: Mapped[Optional[str]] = mapped_column(String(10))  
+    hbv_dna_result: Mapped[Optional[str]] = mapped_column(String(10))  
+    igm_anti_hbc_result: Mapped[Optional[str]] = mapped_column(String(10)) 
+    
+    
 
 
 
-class MaternalInformation(BaseModel, Base):
-    __tablename__ = "maternal_information"
     
-    maternal_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    mother_state_fips: Mapped[str] = mapped_column(String(10))
-    mother_state_name: Mapped[str] = mapped_column(String(100))
-    mother_country_residence: Mapped[Optional[str]] = mapped_column(String(150))
-    mother_county_fips: Mapped[str] = mapped_column(String(10))
-    mother_county_name: Mapped[str] = mapped_column(String(100))
-    mother_zip_code: Mapped[Optional[str]] = mapped_column(String(20))
-    mother_date_of_birth: Mapped[Date] = mapped_column(Date)
-    gravida: Mapped[int] = mapped_column(Integer)
-    para: Mapped[int] = mapped_column(Integer)
-    lmp: Mapped[Date] = mapped_column(Date)
-    first_prenatal_date: Mapped[Date] = mapped_column(Date)
-    no_prenatal_care: Mapped[Optional[bool]] = mapped_column(Boolean)
-    trimester_first_prenatal: Mapped[Optional[int]] = mapped_column(Integer)
-    hispanic_latino: Mapped[Optional[bool]] = mapped_column(Boolean)
-    non_hispanic_latino: Mapped[Optional[bool]] = mapped_column(Boolean)
-    
-    # Foreign Key
-    patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
-    
-    # Relationships
-    patient = relationship("PatientInformation", back_populates="maternal_info")
-
-
-class SyphilisTestInformation(BaseModel, Base):
-    __tablename__ = "syphilis_test_information"
-    
-    syphilis_test_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    first_prenatal_test: Mapped[Optional[bool]] = mapped_column(Boolean)
-    gestation_test: Mapped[Optional[bool]] = mapped_column(Boolean)
-    delivery_test: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_single: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_married: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_separated_divorced: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_widow: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_other: Mapped[Optional[bool]] = mapped_column(Boolean)
-    marital_status_unknown: Mapped[Optional[bool]] = mapped_column(Boolean)
-    
-    # Foreign Key
-    patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
-    
-    # Relationships
-    patient = relationship("PatientInformation", back_populates="syphilis_test_info")
-
-
-
-class TreatmentInformation(BaseModel, Base):
-    __tablename__ = "treatment_information"
-    
-    treatment_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    first_penicillin_dose_date: Mapped[Date] = mapped_column(Date)
-    penicillin_dose_before_pregnancy: Mapped[Optional[bool]] = mapped_column(Boolean)
-    penicillin_dose_1st_trimester: Mapped[Optional[bool]] = mapped_column(Boolean)
-    penicillin_dose_2nd_trimester: Mapped[Optional[bool]] = mapped_column(Boolean)
-    penicillin_dose_3rd_trimester: Mapped[Optional[bool]] = mapped_column(Boolean)
-    penicillin_dose_no_treatment: Mapped[Optional[bool]] = mapped_column(Boolean)
-    penicillin_dose_unknown: Mapped[Optional[bool]] = mapped_column(Boolean)
-    treatment_2_4m_units: Mapped[Optional[bool]] = mapped_column(Boolean)
-    treatment_4_8m_units: Mapped[Optional[bool]] = mapped_column(Boolean)
-    treatment_7_2m_units: Mapped[Optional[bool]] = mapped_column(Boolean)
-    treatment_other: Mapped[Optional[str]] = mapped_column(String(64))
-    treatment_unknown: Mapped[Optional[bool]] = mapped_column(Boolean)
-    treatment_plan: Mapped[Optional[str]] = mapped_column(String(255))  # Added this line
-    # Foreign Key
-    patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
-    
-    # Relationships
-    patient = relationship("PatientInformation", back_populates="treatment_info")
-
-
-class SerologicResponse(BaseModel, Base):
-    __tablename__ = "serologic_response"
-    
-    serologic_response_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    serologic_response_yes: Mapped[Optional[bool]] = mapped_column(Boolean)
-    serologic_response_no: Mapped[Optional[bool]] = mapped_column(Boolean)
-    serologic_response_unknown: Mapped[Optional[bool]] = mapped_column(Boolean)
-    serologic_response_not_enough_time: Mapped[Optional[bool]] = mapped_column(Boolean)
-    
-    # Foreign Key
-    patient_id: Mapped[int] = mapped_column(Integer, ForeignKey("patient_information.patient_id", onupdate="CASCADE", ondelete="CASCADE"))
-    
-    # Relationships
-    patient = relationship("PatientInformation", back_populates="serologic_response")

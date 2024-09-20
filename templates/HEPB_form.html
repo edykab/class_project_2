@@ -1,204 +1,141 @@
-<!doctype html>
-<html>
+{% extends "base.html" %}
+
 <head>
-  <meta charset="utf-8">
-  <meta name="keyboards" content="HTML 5, CSS3, JavaScript, JQuery, AngularJs"/>
-  <meta name="description" content="Dynamic web development">
-  <meta name="author" content="edmond">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="../static/main.css">
-  <title>Hepatitis B Page</title>
-<style media="screen">
-.container{
-  margin-bottom: 10px;
-  display: inline-block;
-  width: 100%;
-}
-label, input{
-  display: inline-block;
-}
-
-    input[type="text"],
-    input[type="date"] {
-      width: 50%;
-      padding: 8px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 5px;
-    }
-
-    input[type="submit"] {
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-</style>
-
+  
+{% block head %}
+ {{ super() }}
+ {% block title %}Hepatitis B Page{% endblock title %}
+{% endblock head %}
+ 
 </head>
 <body>
-  <div class="headnav">
-  <nav class="topnav">
-    <ul>
-      <li style="float:left;"><a href="Registration.html">Register New Client</a></li>
-      <li><a href="forms.html">Home</a></li>
-      <li><a href="#">Logout</a></li>
-    </ul>
-  </nav>
+  
   <header>
     <h1>Hepatitis B Infected Pregnant Woman Reporting Form (Confidential Case Report)</h1>
   </header>
 </div>
-  <section>
-    <nav class="col-3">
-      <ul>
-        <li><a href="Personal_info.html">Personal Information </a> </li>
-        <li><a href="Risk_factors.html">Risk Factor Information</a> </li>
-        <li><a href="HEPB_form.html"> <strong>Hepatitis B Pregnant Women Reporting form</strong> </a></li>
-        <li><a href="CONGEN_SYPHILIS.html">Congenital Syphilis Form</a></li>
-        <li><a href="STI_form.html">Chlamydia & Gonorrhea case reporting form</a></li>
-      </ul>
-    </nav>
-  <article class="col-9">
-    <h2>Hepatitis B Infected Pregnant Woman Report Form</h2>
-<div class="container">
+<section class="row">
+  <nav class="col-3">
+    <ul>
+      <li><a href="HEPB_form.html">Hepatitis B Pregnant Women Reporting form</a></li>
+      <li><a href="CONGEN_SYPHILIS.html"> <strong>Congenital Syphilis Form</strong> </a></li>
+      <li><a href="STI_form.html">Chlamydia & Gonorrhea case reporting form</a></li>
+    </ul>
+  </nav>
+  <main class="col-9">
+    <h1>Hepatitis B Infected Pregnant Woman Reporting Form</h1>
+    <form action="/" method="POST">
+        
+        <!-- Patient Information Section -->
+        <fieldset>
+            <legend>Patient Information</legend>
+            <label for="patient_first_name">First Name:</label>
+            <input type="text" id="patient_first_name" name="patient_first_name" required><br><br>
 
-    <form action="#" method="post">
-      <div class="form-group">
-        <label for="last-name">1. Last Name:</label>
-        <input type="text" id="last-name" name="last-name">
-      </div>
-      <div class="form-group">
-        <label for="first-name">2. First Name:</label>
-        <input type="text" id="first-name" name="first-name">
-      </div>
-      <div class="form-group">
-        <label for="middle-name">3. Middle Name:</label>
-        <input type="text" id="middle-name" name="middle-name">
-      </div>
-      <div class="form-group">
-        <label for="date-of-birth">4. Date of Birth :</label>
-        <input type="date" id="date-of-birth" name="date-of-birth" >
-      </div>
-      <div class="form-group">
-        <label for="estimated-delivery-date">5. Estimated Delivery Date :</label>
-        <input type="date" id="estimated-delivery-date" name="estimated-delivery-date" >
-      </div>
-      <div class="form-group">
-        <label for="hepb-status-awareness">6. Patient aware of HepB+ status?</label>
-        <br>
-        <input type="checkbox" id="hepb-status-awareness-yes" name="hepb-status-awareness" value="Yes">
-        <label for="hepb-status-awareness-yes">Yes</label>
+            <label for="patient_middle_name">Middle Name (Optional):</label>
+            <input type="text" id="patient_middle_name" name="patient_middle_name"><br><br>
 
-        <input type="checkbox" id="hepb-status-awareness-no" name="hepb-status-awareness" value="No">
-        <label for="hepb-status-awareness-no">No</label>
+            <label for="patient_last_name">Last Name:</label>
+            <input type="text" id="patient_last_name" name="patient_last_name" required><br><br>
 
-        <input type="checkbox" id="hepb-status-awareness-unknown" name="hepb-status-awareness" value="Unknown">
-        <label for="hepb-status-awareness-unknown">Unknown</label>
-      </div>
-      <div class="form-group">
-        <label for="address">7. Address:</label>
-        <input type="text" id="address" name="address">
-      </div>
-      <div class="form-group">
-        <label for="city">8. City:</label>
-        <input type="text" id="city" name="city">
-      </div>
-      <div class="form-group">
-        <label for="state">9. State:</label>
-        <input type="text" id="state" name="state">
-      </div>
-      <div class="form-group">
-        <label for="zip">10. Zip:</label>
-        <input type="text" id="zip" name="zip">
-        </div>
-        <div class="form-group">
-          <label for="phone-number">11. Phone Number:</label>
-          <input type="text" id="phone-number" name="phone-number">
-        </div>
-        <div class="form-group">
-          <label for="phone-number">11. Phone Number:</label>
-          <input type="text" id="phone-number" name="phone-number">
-        </div>
-        <div class="form-group">
-          <label for="insurance-type">12. Type of Insurance:</label>
-          <br>
-          <input type="checkbox" id="insurance-type-private" name="insurance-type" value="Private">
-          <label for="insurance-type-private">Private</label>
+            <label for="patient_date_of_birth">Date of Birth:</label>
+            <input type="date" id="patient_date_of_birth" name="patient_date_of_birth" required><br><br>
 
-          <input type="checkbox" id="insurance-type-medicaid" name="insurance-type" value="Medicaid">
-          <label for="insurance-type-medicaid">Medicaid</label>
+            <label for="patient_race">Race:</label>
+            <select id="patient_race" name="patient_race" required>
+                <option value="White">White</option>
+                <option value="Black">Black</option>
+                <option value="Asian">Asian</option>
+                <option value="American Indian">American Indian</option>
+                <option value="Pacific Islander">Pacific Islander</option>
+                <option value="Other">Other</option>
+            </select><br><br>
 
-          <input type="checkbox" id="insurance-type-medicare" name="insurance-type" value="Medicare">
-          <label for="insurance-type-medicare">Medicare</label>
+            <label for="patient_ethnicity">Ethnicity:</label>
+            <select id="patient_ethnicity" name="patient_ethnicity" required>
+                <option value="Hispanic">Hispanic</option>
+                <option value="Non-Hispanic">Non-Hispanic</option>
+            </select><br><br>
 
-          <input type="checkbox" id="insurance-type-uninsured" name="insurance-type" value="Uninsured">
-          <label for="insurance-type-uninsured">Uninsured</label>
+            <label for="patient_country_of_birth">Country of Birth:</label>
+            <input type="text" id="patient_country_of_birth" name="patient_country_of_birth" required><br><br>
 
-          <input type="checkbox" id="insurance-type-unknown" name="insurance-type" value="Unknown">
-          <label for="insurance-type-unknown">Unknown</label>
-        </div>
-        <div class="form-group">
-          <label for="race">13. Race:</label>
-          <br>
-          <input type="checkbox" id="race-american-indian" name="race" value="American Indian/Alaskan Native">
-          <label for="race-american-indian">American Indian/Alaskan Native</label>
+            <label for="patient_primary_language">Primary Language:</label>
+            <input type="text" id="patient_primary_language" name="patient_primary_language"><br><br>
 
-          <input type="checkbox" id="race-asian" name="race" value="Asian">
-          <label for="race-asian">Asian</label>
+            <label for="patient_address">Address:</label>
+            <input type="text" id="patient_address" name="patient_address" required><br><br>
 
-          <input type="checkbox" id="race-black-african-am" name="race" value="Black/African Am">
-          <label for="race-black-african-am">Black/African American</label>
+            <label for="patient_city">City:</label>
+            <input type="text" id="patient_city" name="patient_city" required><br><br>
 
-          <input type="checkbox" id="race-native-hawaiian-pacific-islander" name="race" value="Native Hawaiian/Pacific Islander">
-          <label for="race-native-hawaiian-pacific-islander">Native Hawaiian/Pacific Islander</label>
+            <label for="patient_state">State:</label>
+            <input type="text" id="patient_state" name="patient_state" required><br><br>
 
-          <input type="checkbox" id="race-white" name="race" value="White">
-          <label for="race-white">White</label>
+            <label for="patient_zip_code">Zip Code:</label>
+            <input type="text" id="patient_zip_code" name="patient_zip_code"><br><br>
+        </fieldset>
 
-          <input type="checkbox" id="race-other" name="race" value="Other">
-          <label for="race-other">Other</label>
+        <!-- Clinical and Laboratory Information Section -->
+        <fieldset>
+            <legend>Clinical and Laboratory Information</legend>
+            <label for="ob_provider_first_name">OB Provider First Name:</label>
+            <input type="text" id="ob_provider_first_name" name="ob_provider_first_name" required><br><br>
 
-          <input type="checkbox" id="race-unknown" name="race" value="Unknown">
-          <label for="race-unknown">Unknown</label>
-        </div>
-        <div class="form-group">
-          <label for="hispanic">14. Hispanic:</label>
-          <br>
-          <input type="radio" id="hispanic-yes" name="hispanic" value="Yes">
-          <label for="hispanic-yes">Yes</label>
+            <label for="ob_provider_last_name">OB Provider Last Name:</label>
+            <input type="text" id="ob_provider_last_name" name="ob_provider_last_name" required><br><br>
 
-          <input type="radio" id="hispanic-no" name="hispanic" value="No">
-          <label for="hispanic-no">No</label>
+            <label for="expected_delivery_date">Expected Delivery Date:</label>
+            <input type="date" id="expected_delivery_date" name="expected_delivery_date" required><br><br>
 
-          <input type="radio" id="hispanic-unknown" name="hispanic" value="Unknown">
-          <label for="hispanic-unknown">Unknown</label>
-        </div>
-        <div class="form-group">
-          <label for="country-of-birth">15. Country of Birth:</label>
-          <input type="text" id="country-of-birth" name="country-of-birth">
-        </div>
-        <div class="form-group">
-          <label for="primary-language">16. Primary Language:</label>
-          <input type="text" id="primary-language" name="primary-language">
+            <label for="insurance_type">Type of Insurance:</label>
+            <select id="insurance_type" name="insurance_type" required>
+                <option value="Private">Private</option>
+                <option value="Medicaid">Medicaid</option>
+                <option value="Medicare">Medicare</option>
+                <option value="Uninsured">Uninsured</option>
+                <option value="Unknown">Unknown</option>
+            </select><br><br>
 
-        </div>
-        <div class="form-group">
-          <input type="checkbox" id="interpreter-needed" name="interpreter-needed">
-          <label for="interpreter-needed">Check if Interpreter Needed</label>
-        </div>
+            <label for="hbsag_result">Hepatitis B Surface Antigen (HBsAg) Result:</label>
+            <select id="hbsag_result" name="hbsag_result">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Unknown">Unknown</option>
+            </select><br><br>
 
-    <input type="submit" value="Submit">
-  </form>
+            <label for="hbeag_result">Hepatitis B e-Antigen (HBeAg) Result:</label>
+            <select id="hbeag_result" name="hbeag_result">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Unknown">Unknown</option>
+            </select><br><br>
 
-  </article>
+            <label for="hbv_dna_result">Hepatitis B Virus DNA (HBV DNA) Result:</label>
+            <select id="hbv_dna_result" name="hbv_dna_result">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Unknown">Unknown</option>
+            </select><br><br>
+
+            <label for="igm_anti_hbc_result">IgM Antibody to Hepatitis B Core Antigen (IgM anti-HBc) Result:</label>
+            <select id="igm_anti_hbc_result" name="igm_anti_hbc_result">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Unknown">Unknown</option>
+            </select><br><br>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit Report</button>
+    </form>
+
+</main>
+  </section>
+
+      {% block footer %}
+      {{ super() }}
+      {% endblock footer %}
 </body>
-
 
 </html>
